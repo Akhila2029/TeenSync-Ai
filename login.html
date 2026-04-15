@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - TeenSync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#575a93",
+            "primary-container": "#bdbeff",
+            "on-primary": "#fbf7ff",
+            "on-primary-container": "#363970",
+            "primary-fixed-dim": "#afb1f1",
+            secondary: "#31638a",
+            "secondary-container": "#cde5ff",
+            "on-secondary-container": "#20567c",
+            tertiary: "#306b3f",
+            "tertiary-container": "#b4f5bd",
+            "on-tertiary-container": "#235f35",
+            "tertiary-fixed": "#b4f5bd",
+            surface: "#f7fafe",
+            "surface-dim": "#d2dbe3",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f0f4f9",
+            "surface-container": "#e9eef4",
+            "surface-container-high": "#e2e9ef",
+            "surface-container-highest": "#dbe4eb",
+            "on-surface": "#2b3339",
+            "on-surface-variant": "#586066",
+            outline: "#737c82",
+            "outline-variant": "#abb3ba",
+            error: "#ac3149",
+          },
+          fontFamily: {
+            headline: ["Plus Jakarta Sans", "sans-serif"],
+            body: ["Manrope", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "2rem",
+            xl: "3rem",
+            full: "9999px",
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex items-center justify-center relative overflow-hidden">
+  
+  <!-- Background Elements -->
+  <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-primary-container/30 blur-[100px] -z-10 mix-blend-multiply"></div>
+  <div class="absolute top-[30%] -right-[15%] w-[40%] h-[50%] rounded-full bg-secondary-container/40 blur-[100px] -z-10 mix-blend-multiply"></div>
+  
+  <!-- Back to home -->
+  <a href="index.html" class="absolute top-6 left-6 flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-bold z-10">
+    <span class="material-symbols-outlined">arrow_back</span> Back to Home
+  </a>
+
+  <!-- Login Card -->
+  <div class="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white p-8 md:p-10 rounded-3xl shadow-xl z-10 mx-4">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 shrink-0 shadow-md">
+        <span class="material-symbols-outlined text-3xl">psychology</span>
+      </div>
+      <h1 class="text-3xl font-headline font-extrabold text-on-surface mb-2">Welcome Back</h1>
+      <p class="text-on-surface-variant">Log in to sync your mind</p>
+    </div>
+
+    <!-- Error Alert -->
+    <div id="login-error" class="hidden mb-6 p-4 bg-error/10 border border-error/20 text-error rounded-xl text-sm font-semibold flex items-center gap-2">
+      <span class="material-symbols-outlined text-sm">error</span>
+      <span id="login-error-msg">Invalid email or password</span>
+    </div>
+
+    <form id="login-form" class="space-y-6">
+      <div>
+        <label for="email" class="block text-sm font-bold text-on-surface mb-2">Email Address</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-outline-variant text-lg">mail</span>
+          </div>
+          <input type="email" id="email" required class="w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-on-surface font-semibold placeholder:font-medium placeholder:text-outline-variant/70" placeholder="you@example.com">
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label for="password" class="block text-sm font-bold text-on-surface">Password</label>
+          <a href="#" class="text-xs font-bold text-primary hover:text-primary/70 transition-colors">Forgot?</a>
+        </div>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-outline-variant text-lg">lock</span>
+          </div>
+          <input type="password" id="password" required class="w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-on-surface font-semibold placeholder:font-medium placeholder:text-outline-variant/70" placeholder="••••••••">
+        </div>
+      </div>
+
+      <button type="submit" id="login-btn" class="w-full py-4 bg-primary text-white rounded-full font-bold shadow-md hover:bg-primary/90 hover:shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+        <span>Log In</span>
+        <span class="material-symbols-outlined text-sm">login</span>
+        <span id="login-spinner" class="hidden material-symbols-outlined animate-spin text-sm">progress_activity</span>
+      </button>
+    </form>
+
+    <div class="mt-8 text-center bg-surface-container border border-outline-variant/20 rounded-xl p-4">
+      <p class="text-sm font-semibold text-on-surface-variant mb-1">Testing backend?</p>
+      <p class="text-[11px] text-on-surface-variant/80">Use <code class="bg-white px-1 py-0.5 rounded text-primary">test@test.com</code> / <code class="bg-white px-1 py-0.5 rounded text-primary">testpass</code> after registering.</p>
+    </div>
+
+    <div class="mt-12 text-center">
+      <p class="text-sm text-on-surface-variant font-medium">Don't have an account? <a href="register.html" class="text-primary font-bold hover:underline">Sign Up</a></p>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('login-error');
+      const errorMsg = document.getElementById('login-error-msg');
+      const btn = document.getElementById('login-btn');
+      const spinner = document.getElementById('login-spinner');
+      
+      // Reset state
+      errorDiv.classList.add('hidden');
+      spinner.classList.remove('hidden');
+      btn.classList.add('opacity-80', 'pointer-events-none');
+      
+      try {
+        const response = await fetch(`${window.TEENSYNC_CONFIG.API_BASE_URL}/api/v1/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Success: Store token and redirect
+          localStorage.setItem('teensync_token', data.access_token);
+          window.location.href = 'dashboard.html';
+        } else {
+          // Error
+          errorMsg.textContent = data.detail || 'Login failed. Please verify credentials.';
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (err) {
+        errorMsg.textContent = 'Server connection error. Is backend running?';
+        errorDiv.classList.remove('hidden');
+      } finally {
+        spinner.classList.add('hidden');
+        btn.classList.remove('opacity-80', 'pointer-events-none');
+      }
+    });
+  </script>
+</body>
+</html>

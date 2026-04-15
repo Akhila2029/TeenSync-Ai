@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TeenSync – Community Hub</title>
+  <meta name="description" content="Join TeenSync's safe community. Connect with peers, share your journey, and join group wellness sessions."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#575a93", "primary-container": "#bdbeff", "on-primary": "#fbf7ff",
+            "on-primary-container": "#363970", "primary-fixed-dim": "#afb1f1",
+            secondary: "#31638a", "secondary-container": "#cde5ff", "on-secondary-container": "#20567c",
+            tertiary: "#306b3f", "tertiary-container": "#b4f5bd", "on-tertiary-container": "#235f35",
+            surface: "#f7fafe", "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f0f4f9", "surface-container": "#e9eef4",
+            "surface-container-high": "#e2e9ef", "surface-container-highest": "#dbe4eb",
+            "on-surface": "#2b3339", "on-surface-variant": "#586066",
+            outline: "#737c82", "outline-variant": "#abb3ba", error: "#ac3149",
+          },
+          fontFamily: { headline: ["Plus Jakarta Sans","sans-serif"], body: ["Manrope","sans-serif"] },
+          borderRadius: { DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px" },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-x-hidden">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500">
+    <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform duration-300">
+          <span class="material-symbols-outlined text-white text-lg" style="font-variation-settings:'FILL' 1">sync</span>
+        </div>
+        <span class="text-xl font-headline font-bold text-on-surface tracking-tight">TeenSync</span>
+      </a>
+      <div class="hidden md:flex items-center gap-1">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="community.html" class="nav-link active">Community</a>
+        <a href="resources.html" class="nav-link">Resources</a>
+        <a href="dashboard.html" class="nav-link">My Space</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="p-2 rounded-full hover:bg-surface-container transition-colors relative">
+          <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+        </button>
+        <div id="community-avatar" class="w-9 h-9 rounded-full bg-primary-container border-2 border-primary/20 flex items-center justify-center font-bold text-primary text-sm cursor-pointer hover:scale-105 transition-transform" data-personalize="initials">A</div>
+        <button id="menu-btn" class="md:hidden p-2 rounded-xl hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-outline-variant/20 px-6 py-4">
+      <div class="flex flex-col gap-2">
+        <a href="index.html" class="mobile-nav-link">Home</a>
+        <a href="community.html" class="mobile-nav-link">Community</a>
+        <a href="resources.html" class="mobile-nav-link">Resources</a>
+        <a href="dashboard.html" class="mobile-nav-link">My Space</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Background blobs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary-container rounded-full" style="filter:blur(80px);opacity:0.35;"></div>
+    <div class="absolute bottom-[10%] right-[-5%] w-[400px] h-[400px] bg-tertiary-container rounded-full" style="filter:blur(80px);opacity:0.3;"></div>
+  </div>
+
+  <main class="relative z-10 pt-28 pb-20 px-6 max-w-screen-xl mx-auto">
+    <!-- Hero Header -->
+    <header class="mb-10 reveal">
+      <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold tracking-widest uppercase text-secondary block mb-3">Community Hub</span>
+          <h1 class="text-4xl md:text-5xl font-headline font-extrabold text-on-surface tracking-tight mb-3">You belong here. 🌿</h1>
+          <p class="text-on-surface-variant max-w-xl text-lg leading-relaxed">
+            Share your journey, join safe group sessions, and find peers who truly understand.
+          </p>
+        </div>
+        <button onclick="scrollToPost()" class="btn-primary shrink-0">
+          <span class="material-symbols-outlined text-base">add</span>
+          Share Something
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-7">
+      <!-- LEFT SIDEBAR -->
+      <aside class="lg:col-span-4 space-y-6">
+        <!-- Group Sessions -->
+        <div class="dashboard-card p-7 reveal">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-headline font-bold">Group Sessions</h2>
+            <span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1">groups</span>
+          </div>
+
+          <div class="space-y-1">
+            <!-- Session 1 - Live -->
+            <div class="session-item group">
+              <div class="w-12 h-12 rounded-xl bg-secondary-container flex flex-col items-center justify-center text-on-secondary-container shrink-0">
+                <span class="text-[9px] font-bold uppercase tracking-wider">Oct</span>
+                <span class="text-lg font-extrabold leading-none">24</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-on-surface text-sm group-hover:text-primary transition-colors truncate">Mindful Mornings</h3>
+                  <span class="inline-flex items-center gap-1 bg-error/10 text-error text-[9px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
+                    <span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse inline-block"></span> LIVE
+                  </span>
+                </div>
+                <p class="text-xs text-on-surface-variant mt-0.5">Guided meditation &amp; check-in</p>
+                <div class="flex items-center gap-2 mt-2">
+                  <div class="flex -space-x-1.5">
+                    <div class="w-5 h-5 rounded-full bg-primary-container border border-white flex items-center justify-center text-[8px] font-bold text-primary">A</div>
+                    <div class="w-5 h-5 rounded-full bg-secondary-container border border-white flex items-center justify-center text-[8px] font-bold text-secondary">J</div>
+                    <div class="w-5 h-5 rounded-full bg-surface-container-high border border-white flex items-center justify-center text-[8px] font-bold text-on-surface-variant">+12</div>
+                  </div>
+                  <span class="text-xs font-semibold text-primary">Starts in 2h</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Session 2 -->
+            <div class="session-item group">
+              <div class="w-12 h-12 rounded-xl bg-tertiary-container flex flex-col items-center justify-center text-on-tertiary-container shrink-0">
+                <span class="text-[9px] font-bold uppercase tracking-wider">Oct</span>
+                <span class="text-lg font-extrabold leading-none">26</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-bold text-on-surface text-sm group-hover:text-primary transition-colors">Creative Flow</h3>
+                <p class="text-xs text-on-surface-variant mt-0.5">Expressive arts workshop</p>
+                <div class="flex items-center gap-2 mt-2">
+                  <span class="text-xs font-semibold text-on-surface-variant">Scheduled · 8 spots left</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Session 3 -->
+            <div class="session-item group">
+              <div class="w-12 h-12 rounded-xl bg-primary-container/40 flex flex-col items-center justify-center text-primary shrink-0">
+                <span class="text-[9px] font-bold uppercase tracking-wider">Oct</span>
+                <span class="text-lg font-extrabold leading-none">29</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-bold text-on-surface text-sm group-hover:text-primary transition-colors">Anxiety Circle</h3>
+                <p class="text-xs text-on-surface-variant mt-0.5">Sharing space &amp; techniques</p>
+                <div class="flex items-center gap-2 mt-2">
+                  <span class="text-xs font-semibold text-on-surface-variant">Open to all</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="w-full mt-5 py-2.5 rounded-full bg-surface-container text-on-surface-variant font-bold text-sm hover:bg-primary-container/30 hover:text-primary transition-colors">
+            View Full Calendar
+          </button>
+        </div>
+
+        <!-- Need to Talk Card -->
+        <div class="soul-gradient rounded-2xl p-7 relative overflow-hidden shadow-lg reveal reveal-delay-1">
+          <div class="absolute -right-4 -bottom-4 opacity-15">
+            <span class="material-symbols-outlined" style="font-size:6rem;font-variation-settings:'FILL' 1">forum</span>
+          </div>
+          <div class="relative z-10">
+            <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-4">
+              <span class="material-symbols-outlined text-white" style="font-variation-settings:'FILL' 1">support_agent</span>
+            </div>
+            <h2 class="text-lg font-headline font-bold text-white mb-2">Need to talk?</h2>
+            <p class="text-white/75 text-sm mb-5 leading-relaxed">Our verified mentors are online and ready to listen in a safe, private chat.</p>
+            <button onclick="showToast('Connecting you with a mentor...','support_agent','#575a93')" class="bg-white text-primary px-5 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-transform">
+              Connect Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Trending Topics -->
+        <div class="dashboard-card p-7 reveal reveal-delay-2">
+          <h2 class="text-lg font-headline font-bold mb-5">Trending Topics</h2>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between group cursor-pointer hover:text-primary transition-colors">
+              <span class="text-sm font-medium">#4-7-8 Breathing</span>
+              <span class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">128 posts</span>
+            </div>
+            <div class="flex items-center justify-between group cursor-pointer hover:text-primary transition-colors">
+              <span class="text-sm font-medium">#DailyWins</span>
+              <span class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">94 posts</span>
+            </div>
+            <div class="flex items-center justify-between group cursor-pointer hover:text-primary transition-colors">
+              <span class="text-sm font-medium">#ArtTherapy</span>
+              <span class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">67 posts</span>
+            </div>
+            <div class="flex items-center justify-between group cursor-pointer hover:text-primary transition-colors">
+              <span class="text-sm font-medium">#SleepHygiene</span>
+              <span class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">52 posts</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN FEED -->
+      <main class="lg:col-span-8 space-y-6">
+        <!-- Post Input -->
+        <div id="post-input-area" class="dashboard-card p-5 reveal">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-11 h-11 rounded-full bg-primary-container flex items-center justify-center font-bold text-primary shrink-0">A</div>
+            <div class="flex-1">
+              <textarea id="new-post-text" class="journal-area text-sm" placeholder="Share something encouraging, a win, or a thought..." style="min-height:80px"></textarea>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex gap-2">
+              <button class="flex items-center gap-1.5 text-xs text-on-surface-variant font-semibold p-2 rounded-lg hover:bg-surface-container transition-colors">
+                <span class="material-symbols-outlined text-sm">image</span> Photo
+              </button>
+              <button class="flex items-center gap-1.5 text-xs text-on-surface-variant font-semibold p-2 rounded-lg hover:bg-surface-container transition-colors">
+                <span class="material-symbols-outlined text-sm">mood</span> Mood
+              </button>
+            </div>
+            <button onclick="publishPost()" class="btn-primary text-xs px-5 py-2">
+              Post
+            </button>
+          </div>
+        </div>
+
+        <!-- Feed -->
+        <div id="post-feed" class="space-y-5">
+
+          <!-- Post 1 -->
+          <article class="post-card reveal">
+            <div class="p-7">
+              <div class="flex items-start justify-between mb-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center font-bold text-primary text-sm" data-personalize="initials">A</div>
+                  <div>
+                    <h4 class="font-bold text-on-surface text-sm" data-personalize="name">Alex River</h4>
+                    <p class="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">2 hours ago · Calm Room</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="bg-tertiary-container text-on-tertiary-container text-[10px] font-bold px-2.5 py-1 rounded-full">🌿 Calm</span>
+                  <button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded-lg hover:bg-surface-container">
+                    <span class="material-symbols-outlined text-lg">more_horiz</span>
+                  </button>
+                </div>
+              </div>
+              <p class="text-on-surface leading-relaxed mb-5">
+                Today was a tough one, but I practiced the 4-7-8 breathing technique we learned in the session on Monday. It really helped me ground myself before the big test. Reminder to everyone: <strong>small steps are still progress.</strong> 🌿
+              </p>
+              <div class="flex items-center gap-2 pt-5 border-t border-surface-container">
+                <button class="action-btn like-btn" data-mood="💙">
+                  <span class="material-symbols-outlined text-base">favorite</span>
+                  <span class="like-count">42</span>
+                </button>
+                <button class="action-btn">
+                  <span class="material-symbols-outlined text-base">chat_bubble</span>
+                  <span>8</span>
+                </button>
+                <button class="action-btn">
+                  <span class="material-symbols-outlined text-base">share</span>
+                </button>
+                <button class="action-btn bookmark-btn ml-auto">
+                  <span class="material-symbols-outlined text-base">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 2 with Image -->
+          <article class="post-card reveal reveal-delay-1">
+            <div class="p-7 pb-5">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center font-bold text-secondary text-sm">J</div>
+                <div>
+                  <h4 class="font-bold text-on-surface text-sm">Jordan K.</h4>
+                  <p class="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">5 hours ago · Creative Space</p>
+                </div>
+              </div>
+              <p class="text-on-surface mb-5 leading-relaxed">Finally finished this sunset sketch. Art is my favorite way to disconnect from the noise. Hope this brings some peace to your feed today! 🎨</p>
+            </div>
+
+            <!-- Image with gradient overlay -->
+            <div class="relative mx-5 mb-5 rounded-xl overflow-hidden">
+              <div class="w-full h-72 bg-gradient-to-br from-purple-100 via-pink-100 to-orange-100 flex items-center justify-center">
+                <div class="text-center">
+                  <div class="text-8xl mb-3">🌅</div>
+                  <p class="text-sm text-on-surface-variant font-medium">Sunset Sketch by Jordan</p>
+                </div>
+              </div>
+              <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+
+            <div class="px-7 pb-5">
+              <div class="flex items-center gap-2 pt-4 border-t border-surface-container">
+                <button class="action-btn like-btn">
+                  <span class="material-symbols-outlined text-base">favorite</span>
+                  <span class="like-count">128</span>
+                </button>
+                <button class="action-btn">
+                  <span class="material-symbols-outlined text-base">chat_bubble</span>
+                  <span>14</span>
+                </button>
+                <button class="action-btn">
+                  <span class="material-symbols-outlined text-base">share</span>
+                </button>
+                <button class="action-btn bookmark-btn ml-auto">
+                  <span class="material-symbols-outlined text-base">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 3 - Quote -->
+          <article class="post-card reveal reveal-delay-2">
+            <div class="p-7">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center font-bold text-tertiary text-sm">S</div>
+                <div>
+                  <h4 class="font-bold text-on-surface text-sm">Sam V.</h4>
+                  <p class="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">12 hours ago · Daily Wins</p>
+                </div>
+              </div>
+              <div class="bg-gradient-to-r from-primary/5 to-secondary/5 border-l-4 border-primary rounded-r-xl pl-5 py-4 pr-4 mb-5">
+                <p class="text-on-surface leading-relaxed italic text-lg font-medium">
+                  "You don't have to see the whole staircase, just take the first step."
+                </p>
+                <p class="text-xs text-on-surface-variant mt-2 font-semibold">— Martin Luther King Jr.</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="action-btn like-btn">
+                  <span class="material-symbols-outlined text-base">favorite</span>
+                  <span class="like-count">56</span>
+                </button>
+                <button class="action-btn">
+                  <span class="material-symbols-outlined text-base">chat_bubble</span>
+                  <span>3</span>
+                </button>
+                <button class="action-btn bookmark-btn ml-auto">
+                  <span class="material-symbols-outlined text-base">bookmark</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 4 - Milestone -->
+          <article class="post-card reveal reveal-delay-3">
+            <div class="p-7">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center font-bold text-primary text-sm">M</div>
+                <div>
+                  <h4 class="font-bold text-on-surface text-sm">Maya L.</h4>
+                  <p class="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Yesterday · Milestone</p>
+                </div>
+              </div>
+              <div class="bg-gradient-to-br from-primary-container/20 to-secondary-container/20 rounded-xl p-5 mb-5 text-center">
+                <div class="text-5xl mb-2">🎉</div>
+                <h3 class="font-headline font-bold text-on-surface text-lg">30-Day Journal Streak!</h3>
+                <p class="text-sm text-on-surface-variant mt-1">I've journaled every single day for 30 days. Never thought I'd stick with anything this long!</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="action-btn like-btn">
+                  <span class="material-symbols-outlined text-base">favorite</span>
+                  <span class="like-count">203</span>
+                </button>
+                <button class="action-btn">
+                  <span class="material-symbols-outlined text-base">chat_bubble</span>
+                  <span>31</span>
+                </button>
+                <button class="action-btn">
+                  <span class="material-symbols-outlined text-base">share</span>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Load More -->
+        <div class="flex justify-center py-6">
+          <button onclick="loadMorePosts()" class="flex items-center gap-2 text-primary font-bold hover:text-primary/70 transition-colors">
+            <span class="material-symbols-outlined">keyboard_arrow_down</span>
+            Explore more stories
+          </button>
+        </div>
+      </main>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-surface-container-lowest border-t border-outline-variant/10 py-10 px-6 mt-8">
+    <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-sm text-on-surface-variant">© 2024 TeenSync. Made with 💙 for teen wellbeing.</p>
+      <div class="flex gap-6 text-sm text-on-surface-variant">
+        <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-primary transition-colors">Safety Guide</a>
+        <a href="#" class="hover:text-primary transition-colors">Help Center</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== LUNA CHAT WIDGET ===== -->
+  <!-- Chat Button -->
+  <button id="luna-chat-toggle" class="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-xl hover:scale-110 transition-transform flex items-center justify-center z-50">
+    <span class="material-symbols-outlined text-2xl" id="luna-toggle-icon">chat</span>
+  </button>
+
+  <!-- Chat Window -->
+  <div id="luna-chat-window" class="fixed bottom-24 right-6 w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-outline-variant/20 z-50 flex flex-col hidden overflow-hidden scale-95 opacity-0 transition-all duration-300 transform origin-bottom-right" style="height: 500px; max-height: calc(100vh - 120px);">
+    <!-- Chat Header -->
+    <div class="bg-primary px-4 py-3 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+        <span class="text-xl">🌙</span>
+      </div>
+      <div>
+        <h3 class="text-white font-headline font-bold leading-tight">Luna</h3>
+        <p class="text-white/80 text-xs">AI wellness assistant</p>
+      </div>
+      <button id="luna-chat-close" class="ml-auto text-white/80 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-sm">close</span>
+      </button>
+    </div>
+    
+    <!-- Chat Messages -->
+    <div id="luna-chat-messages" class="flex-1 p-4 overflow-y-auto bg-surface-container-lowest flex flex-col gap-3">
+      <!-- Welcome message -->
+      <div class="self-start bg-surface-container px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[85%] text-sm text-on-surface">
+        Hi there! I'm Luna. I'm here to listen, support, and help you find the right resources. How are you feeling today?
+      </div>
+    </div>
+    
+    <!-- Typing indicator (hidden by default) -->
+    <div id="luna-typing-indicator" class="hidden px-4 pb-2 bg-surface-container-lowest">
+      <div class="flex items-center gap-1 my-1">
+        <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+        <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+        <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+        <span class="text-xs text-on-surface-variant ml-2 italic">Luna is typing...</span>
+      </div>
+    </div>
+    
+    <!-- Chat Input -->
+    <div class="p-3 bg-white border-t border-outline-variant/10">
+      <div class="relative flex items-center">
+        <input type="text" id="luna-chat-input" class="w-full bg-surface-container-low border-none rounded-full pl-4 pr-12 py-2.5 text-sm focus:ring-1 focus:ring-primary outline-none" placeholder="Type a message..." autocomplete="off">
+        <button id="luna-chat-send" class="absolute right-1 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors">
+          <span class="material-symbols-outlined text-sm">send</span>
+        </button>
+      </div>
+      <div class="text-[10px] text-center text-on-surface-variant mt-2">
+        Luna is an AI, not a human crisis counselor.
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    function scrollToPost() {
+      document.getElementById('post-input-area').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => document.getElementById('new-post-text').focus(), 600);
+    }
+
+    function publishPost() {
+      const text = document.getElementById('new-post-text').value.trim();
+      if (!text) { showToast('Write something first!', 'edit_note', '#586066'); return; }
+
+      const feed = document.getElementById('post-feed');
+      const article = document.createElement('article');
+      article.className = 'post-card';
+      article.style.animation = 'slideInLeft 0.4s ease forwards';
+      article.innerHTML = `
+        <div class="p-7">
+          <div class="flex items-start justify-between mb-5">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center font-bold text-primary text-sm">You</div>
+              <div>
+                <h4 class="font-bold text-on-surface text-sm">You</h4>
+                <p class="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Just now</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-on-surface leading-relaxed mb-5">${text}</p>
+          <div class="flex items-center gap-2 pt-5 border-t border-surface-container">
+            <button class="action-btn like-btn"><span class="material-symbols-outlined text-base">favorite</span><span class="like-count">0</span></button>
+            <button class="action-btn"><span class="material-symbols-outlined text-base">chat_bubble</span><span>0</span></button>
+            <button class="action-btn bookmark-btn ml-auto"><span class="material-symbols-outlined text-base">bookmark</span></button>
+          </div>
+        </div>
+      `;
+      feed.prepend(article);
+      document.getElementById('new-post-text').value = '';
+
+      // Re-bind like/bookmark events
+      article.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('liked');
+          const c = btn.querySelector('.like-count');
+          if (c) c.textContent = btn.classList.contains('liked') ? parseInt(c.textContent) + 1 : parseInt(c.textContent) - 1;
+          if (btn.classList.contains('liked')) showToast('Liked! 💙', 'favorite', '#ac3149');
+        });
+      });
+      article.querySelectorAll('.bookmark-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('bookmarked');
+          const icon = btn.querySelector('.material-symbols-outlined');
+          if (icon) icon.style.fontVariationSettings = btn.classList.contains('bookmarked') ? "'FILL' 1" : "'FILL' 0";
+          if (btn.classList.contains('bookmarked')) showToast('Saved to your toolkit!', 'bookmark', '#575a93');
+        });
+      });
+
+      showToast('Your post is live! 🌿', 'check_circle', '#306b3f');
+    }
+
+    function loadMorePosts() {
+      showToast('Loading more stories...', 'hourglass_top', '#575a93');
+    }
+  </script>
+</body>
+</html>

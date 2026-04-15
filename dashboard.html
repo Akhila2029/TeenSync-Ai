@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TeenSync – My Personal Space</title>
+  <meta name="description" content="Your personal TeenSync dashboard — mood tracking, journaling, wellness progress, and upcoming sessions."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#575a93", "primary-container": "#bdbeff", "on-primary": "#fbf7ff",
+            "on-primary-container": "#363970", "primary-fixed-dim": "#afb1f1",
+            secondary: "#31638a", "secondary-container": "#cde5ff", "on-secondary-container": "#20567c",
+            tertiary: "#306b3f", "tertiary-container": "#b4f5bd", "on-tertiary-container": "#235f35",
+            surface: "#f7fafe", "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f0f4f9", "surface-container": "#e9eef4",
+            "surface-container-high": "#e2e9ef", "surface-container-highest": "#dbe4eb",
+            "on-surface": "#2b3339", "on-surface-variant": "#586066",
+            outline: "#737c82", "outline-variant": "#abb3ba", error: "#ac3149",
+          },
+          fontFamily: { headline: ["Plus Jakarta Sans","sans-serif"], body: ["Manrope","sans-serif"] },
+          borderRadius: { DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px" },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-x-hidden">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500">
+    <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform duration-300">
+          <span class="material-symbols-outlined text-white text-lg" style="font-variation-settings:'FILL' 1">sync</span>
+        </div>
+        <span class="text-xl font-headline font-bold text-on-surface tracking-tight">TeenSync</span>
+      </a>
+      <div class="hidden md:flex items-center gap-1">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="resources.html" class="nav-link">Resources</a>
+        <a href="dashboard.html" class="nav-link active">My Space</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="p-2 rounded-full hover:bg-surface-container transition-colors relative">
+          <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+        </button>
+        <div id="dashboard-avatar" class="w-9 h-9 rounded-full bg-primary-container border-2 border-primary/20 flex items-center justify-center font-bold text-primary text-sm cursor-pointer hover:scale-105 transition-transform" title="User">US</div>
+        <button id="logout-btn" class="hidden md:flex items-center gap-1.5 text-error px-3 py-1.5 rounded-full hover:bg-error/10 transition-colors text-sm font-bold ml-2">
+          <span class="material-symbols-outlined text-sm">logout</span> Logout
+        </button>
+        <button id="menu-btn" class="md:hidden p-2 rounded-xl hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-outline-variant/20 px-6 py-4">
+      <div class="flex flex-col gap-2">
+        <a href="index.html" class="mobile-nav-link">Home</a>
+        <a href="community.html" class="mobile-nav-link">Community</a>
+        <a href="resources.html" class="mobile-nav-link">Resources</a>
+        <a href="dashboard.html" class="mobile-nav-link active">My Space</a>
+        <button onclick="handleLogout()" class="border border-error text-error text-center rounded-xl p-3 font-bold mt-2 hover:bg-error/5 transition-colors">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Decorative blobs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary-container rounded-full" style="filter:blur(80px);opacity:0.3;"></div>
+    <div class="absolute bottom-[10%] left-[-10%] w-[600px] h-[600px] bg-tertiary-container rounded-full" style="filter:blur(100px);opacity:0.2;"></div>
+  </div>
+
+  <main class="relative z-10 pt-28 pb-20 px-6 max-w-screen-xl mx-auto">
+    
+    <!-- Header -->
+    <header class="mb-10 reveal">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-1">
+            <h1 id="dashboard-welcome-name" class="text-3xl md:text-4xl font-headline font-extrabold tracking-tight text-on-surface">Hey there 👋</h1>
+            <span class="bg-primary-container text-on-primary-container text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-xs" style="font-variation-settings:'FILL' 1">workspace_premium</span>
+              <span id="dashboard-level-label">Level 12 Explorer</span>
+            </span>
+          </div>
+          <p class="text-on-surface-variant text-base">Your safe space is ready. You've completed <strong class="text-on-surface">4 focus sessions</strong> this week — keep going!</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-on-surface-variant">Today is <strong class="text-on-surface">Thursday, Oct 24</strong></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Bento Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+
+      <!-- ======= MOOD CHECK-IN (Full width, top) ======= -->
+      <div class="md:col-span-12 dashboard-card p-7 reveal">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex-1">
+            <span class="text-xs font-bold uppercase tracking-widest text-primary block mb-1">Daily Check-In</span>
+            <h2 class="text-xl font-headline font-bold mb-1">How are you feeling today?</h2>
+            <p class="text-sm text-on-surface-variant">Your mood is logged privately and only for you.</p>
+          </div>
+          <div class="flex gap-4 md:gap-6 flex-wrap">
+            <div class="mood-option" data-mood="😄 Wonderful" onclick="selectMood(this)">
+              <div class="mood-emoji bg-yellow-100">😄</div>
+              <span class="text-xs text-on-surface-variant font-medium">Wonderful</span>
+            </div>
+            <div class="mood-option" data-mood="🙂 Good" onclick="selectMood(this)">
+              <div class="mood-emoji bg-green-100">🙂</div>
+              <span class="text-xs text-on-surface-variant font-medium">Good</span>
+            </div>
+            <div class="mood-option" data-mood="😐 Okay" onclick="selectMood(this)">
+              <div class="mood-emoji bg-blue-100">😐</div>
+              <span class="text-xs text-on-surface-variant font-medium">Okay</span>
+            </div>
+            <div class="mood-option" data-mood="😔 Rough" onclick="selectMood(this)">
+              <div class="mood-emoji bg-purple-100">😔</div>
+              <span class="text-xs text-on-surface-variant font-medium">Rough</span>
+            </div>
+            <div class="mood-option" data-mood="😤 Stressed" onclick="selectMood(this)">
+              <div class="mood-emoji bg-red-100">😤</div>
+              <span class="text-xs text-on-surface-variant font-medium">Stressed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= WEEKLY PROGRESS (Large) ======= -->
+      <div class="md:col-span-8 dashboard-card p-7 reveal">
+        <div class="flex items-start justify-between mb-7">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-primary block mb-1">Weekly Journey</span>
+            <h2 class="text-xl font-headline font-bold">Focus &amp; Wellness</h2>
+          </div>
+          <div class="text-right">
+            <p class="text-2xl font-headline font-extrabold text-primary">68%</p>
+            <p class="text-xs text-on-surface-variant">Weekly Goal</p>
+          </div>
+        </div>
+
+        <!-- Animated Chart Bars -->
+        <div class="chart-bars flex gap-3 mb-7">
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-track"><div class="chart-bar-fill" data-height="60%"></div></div>
+            <span class="text-xs text-on-surface-variant">M</span>
+          </div>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-track"><div class="chart-bar-fill" data-height="85%"></div></div>
+            <span class="text-xs text-on-surface-variant">T</span>
+          </div>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-track"><div class="chart-bar-fill" data-height="40%"></div></div>
+            <span class="text-xs text-on-surface-variant">W</span>
+          </div>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-track"><div class="chart-bar-fill today" data-height="92%"></div></div>
+            <span class="text-xs text-primary font-bold">T</span>
+          </div>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-track"></div>
+            <span class="text-xs text-on-surface-variant">F</span>
+          </div>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-track"></div>
+            <span class="text-xs text-on-surface-variant">S</span>
+          </div>
+          <div class="chart-bar-wrap">
+            <div class="chart-bar-track"></div>
+            <span class="text-xs text-on-surface-variant">S</span>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="grid grid-cols-3 gap-4 mb-7">
+          <div class="bg-surface-container-low rounded-xl p-4 text-center">
+            <p id="dashboard-sessions-count" class="text-xl font-headline font-extrabold text-primary">0</p>
+            <p class="text-xs text-on-surface-variant mt-0.5">Sessions</p>
+          </div>
+          <div class="bg-surface-container-low rounded-xl p-4 text-center">
+            <p id="dashboard-streak-number" class="text-xl font-headline font-extrabold text-tertiary">7</p>
+            <p class="text-xs text-on-surface-variant mt-0.5">Day Streak</p>
+          </div>
+          <div class="bg-surface-container-low rounded-xl p-4 text-center">
+            <p id="dashboard-xp-earned" class="text-xl font-headline font-extrabold text-secondary">0</p>
+            <p class="text-xs text-on-surface-variant mt-0.5">XP Earned</p>
+          </div>
+        </div>
+
+        <!-- Today's goal -->
+        <div class="bg-gradient-to-r from-tertiary-container/30 to-secondary-container/20 rounded-xl p-5 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 bg-tertiary-container rounded-full flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings:'FILL' 1">eco</span>
+            </div>
+            <div>
+              <p class="font-bold text-sm text-on-surface">Today's Goal</p>
+              <p class="text-xs text-on-surface-variant">15 min mindful breathing</p>
+            </div>
+          </div>
+          <button id="start-session-btn" class="btn-primary text-sm shrink-0">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">play_arrow</span>
+            Start Session
+          </button>
+        </div>
+      </div>
+
+      <!-- ======= UPCOMING SESSION ======= -->
+      <div class="md:col-span-4 bg-gradient-to-br from-secondary-container/40 to-primary-container/20 rounded-2xl border border-white/30 p-7 reveal">
+        <span class="text-xs font-bold uppercase tracking-widest text-secondary block mb-5">Coming Up</span>
+        <h3 class="text-xl font-headline font-bold mb-6">Group Support Session</h3>
+        <div class="space-y-5 mb-7">
+          <div class="flex gap-3">
+            <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+              <span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1">calendar_today</span>
+            </div>
+            <div>
+              <p class="font-bold text-sm">Tomorrow, Oct 25</p>
+              <p class="text-xs text-on-surface-variant">4:30 PM · Online</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+              <span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings:'FILL' 1">groups</span>
+            </div>
+            <div>
+              <p class="font-bold text-sm">Mindful Teens Cohort</p>
+              <p class="text-xs text-on-surface-variant">Hosted by Sarah M. · 14 attending</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex -space-x-2 mb-5">
+          <div class="w-8 h-8 rounded-full bg-primary-container border-2 border-white flex items-center justify-center text-xs font-bold text-primary">A</div>
+          <div class="w-8 h-8 rounded-full bg-secondary-container border-2 border-white flex items-center justify-center text-xs font-bold text-secondary">J</div>
+          <div class="w-8 h-8 rounded-full bg-tertiary-container border-2 border-white flex items-center justify-center text-xs font-bold text-tertiary">S</div>
+          <div class="w-8 h-8 rounded-full bg-surface-container-high border-2 border-white flex items-center justify-center text-[10px] font-bold text-on-surface-variant">+11</div>
+        </div>
+        <button onclick="showToast('Reminder set for Oct 25 at 4:30 PM ✅','notifications','#31638a')" class="w-full py-3 bg-white text-secondary rounded-full text-sm font-bold hover:bg-surface-container-low transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-sm align-middle mr-1" style="font-variation-settings:'FILL' 1">notifications</span>
+          Set Reminder
+        </button>
+      </div>
+
+      <!-- ======= SMART JOURNAL ======= -->
+      <div class="md:col-span-7 dashboard-card p-7 reveal">
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-primary block mb-1">Smart Journal</span>
+            <h2 class="text-xl font-headline font-bold">Today's Reflection</h2>
+          </div>
+          <div class="flex gap-2">
+            <span class="bg-surface-container text-on-surface-variant text-xs px-3 py-1.5 rounded-full font-semibold">🔥 7 day streak</span>
+          </div>
+        </div>
+
+        <!-- AI Prompt -->
+        <div class="bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/10 rounded-xl p-4 mb-4 flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings:'FILL' 1">auto_awesome</span>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-primary mb-0.5">AI Prompt for Today</p>
+            <p class="text-sm text-on-surface-variant italic">What's one small thing that made you smile today, even briefly?</p>
+          </div>
+        </div>
+
+        <textarea id="journal-text" class="journal-area mb-4" placeholder="Start writing here... your thoughts are safe and private."></textarea>
+
+        <!-- Mood tags -->
+        <div class="flex flex-wrap gap-2 mb-5">
+          <button onclick="addMoodTag(this,'😊 Happy')" class="text-xs px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-yellow-100 hover:text-yellow-800 transition-colors font-semibold">😊 Happy</button>
+          <button onclick="addMoodTag(this,'🧠 Focused')" class="text-xs px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-blue-100 hover:text-blue-800 transition-colors font-semibold">🧠 Focused</button>
+          <button onclick="addMoodTag(this,'😌 Calm')" class="text-xs px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-green-100 hover:text-green-800 transition-colors font-semibold">😌 Calm</button>
+          <button onclick="addMoodTag(this,'😤 Stressed')" class="text-xs px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-red-100 hover:text-red-800 transition-colors font-semibold">😤 Stressed</button>
+          <button onclick="addMoodTag(this,'🙂 Grateful')" class="text-xs px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-purple-100 hover:text-purple-800 transition-colors font-semibold">🙂 Grateful</button>
+        </div>
+
+        <div class="flex gap-3">
+          <button onclick="saveJournal()" class="btn-primary text-sm flex-1">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">save</span>
+            Save Entry
+          </button>
+          <button onclick="newPrompt()" class="p-3 rounded-full border border-outline-variant/20 text-on-surface-variant hover:bg-surface-container transition-colors" title="New prompt">
+            <span class="material-symbols-outlined text-lg">refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ======= LUNA AI CHAT ======= -->
+      <div class="md:col-span-5 dashboard-card flex flex-col p-0 overflow-hidden reveal border-2 border-primary/20 bg-surface-container-lowest" style="min-height: 480px;">
+        <!-- Chat Header -->
+        <div class="bg-primary/5 px-6 py-4 flex items-center justify-between border-b border-outline-variant/20">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+              <span class="text-xl">🌙</span>
+            </div>
+            <div>
+              <h3 class="text-on-primary-container font-headline font-bold leading-tight">Luna Chat</h3>
+              <p class="text-on-surface-variant text-[11px] tracking-wide uppercase font-bold flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse"></span> Online 24/7
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div id="luna-chat-messages" class="flex-1 p-5 overflow-y-auto bg-transparent flex flex-col gap-4">
+          <!-- Welcome message -->
+          <div class="self-start bg-surface-container px-4 py-3 rounded-2xl rounded-tl-sm max-w-[85%] text-sm text-on-surface">
+            <span id="luna-greeting-name">Hi there!</span> I'm Luna. I'm here to listen, support, and help you find the right resources. How are you feeling today?
+          </div>
+        </div>
+        
+        <!-- Typing indicator -->
+        <div id="luna-typing-indicator" class="hidden px-5 pb-3">
+          <div class="flex items-center gap-1 my-1">
+            <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+            <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+            <span class="text-xs text-on-surface-variant ml-2 italic">Luna is typing...</span>
+          </div>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="p-4 bg-primary/5 border-t border-outline-variant/20">
+          <div class="relative flex items-center">
+            <input type="text" id="luna-chat-input" class="w-full bg-white border border-outline-variant/30 rounded-full pl-5 pr-12 py-3 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow relative z-10" placeholder="Type a message..." autocomplete="off">
+            <button id="luna-chat-send" class="absolute right-1.5 w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-transform hover:scale-105 z-20 shadow-md">
+              <span class="material-symbols-outlined text-sm">send</span>
+            </button>
+          </div>
+          <div class="text-[10px] text-center text-on-surface-variant mt-3" style="opacity: 0.8">
+            Luna is an AI tool, not a human crisis counselor.
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= QUICK ACTIONS ======= -->
+      <div class="md:col-span-6 grid grid-cols-2 gap-4 reveal">
+        <div class="bg-gradient-to-br from-tertiary-container/30 to-green-50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow border border-tertiary/10 group">
+          <div>
+            <span class="material-symbols-outlined text-tertiary text-2xl mb-3 block" style="font-variation-settings:'FILL' 1">psychology</span>
+            <h4 class="text-base font-headline font-bold mb-1">Feeling Overwhelmed?</h4>
+            <p class="text-sm text-on-surface-variant">Try the 5-4-3-2-1 grounding exercise.</p>
+          </div>
+          <button onclick="showToast('Starting grounding exercise...','psychology','#306b3f')" class="mt-5 text-tertiary text-xs font-extrabold uppercase tracking-widest flex items-center gap-1.5 group-hover:gap-3 transition-all">
+            Try Now <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          </button>
+        </div>
+        <div class="bg-gradient-to-br from-primary-container/20 to-blue-50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow border border-primary/10 group">
+          <div>
+            <span class="material-symbols-outlined text-primary text-2xl mb-3 block" style="font-variation-settings:'FILL' 1">edit_note</span>
+            <h4 class="text-base font-headline font-bold mb-1">Time for Reflection</h4>
+            <p class="text-sm text-on-surface-variant">Your journal has been quiet for 2 days.</p>
+          </div>
+          <button onclick="document.getElementById('journal-text').focus();document.getElementById('journal-text').scrollIntoView({behavior:'smooth'})" class="mt-5 text-primary text-xs font-extrabold uppercase tracking-widest flex items-center gap-1.5 group-hover:gap-3 transition-all">
+            Write Entry <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          </button>
+        </div>
+        <div class="bg-gradient-to-br from-secondary-container/30 to-blue-50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow border border-secondary/10 group">
+          <div>
+            <span class="material-symbols-outlined text-secondary text-2xl mb-3 block" style="font-variation-settings:'FILL' 1">groups</span>
+            <h4 class="text-base font-headline font-bold mb-1">Join a Session</h4>
+            <p class="text-sm text-on-surface-variant">Live sessions happening right now.</p>
+          </div>
+          <a href="community.html" class="mt-5 text-secondary text-xs font-extrabold uppercase tracking-widest flex items-center gap-1.5 group-hover:gap-3 transition-all">
+            Browse <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          </a>
+        </div>
+        <div class="bg-gradient-to-br from-error/5 to-pink-50 rounded-2xl p-6 flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow border border-error/10 group">
+          <div>
+            <span class="material-symbols-outlined text-error text-2xl mb-3 block" style="font-variation-settings:'FILL' 1">support_agent</span>
+            <h4 class="text-base font-headline font-bold mb-1">Need Support?</h4>
+            <p class="text-sm text-on-surface-variant">Connect with a mentor instantly.</p>
+          </div>
+          <button onclick="showToast('Connecting to mentor support...','support_agent','#ac3149')" class="mt-5 text-error text-xs font-extrabold uppercase tracking-widest flex items-center gap-1.5 group-hover:gap-3 transition-all">
+            Get Help <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ======= ACHIEVEMENTS ======= -->
+      <div class="md:col-span-6 dashboard-card p-7 reveal">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="text-xl font-headline font-bold">Achievements</h3>
+          <span class="text-xs text-on-surface-variant font-semibold">3/12 unlocked</span>
+        </div>
+        <div class="progress-bar mb-5">
+          <div class="progress-fill" data-width="25%" style="width:0%"></div>
+        </div>
+        <div class="grid grid-cols-4 gap-3">
+          <div class="flex flex-col items-center gap-1.5 cursor-pointer group" title="First Check-in">
+            <div class="w-14 h-14 rounded-2xl bg-yellow-100 flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform">🌟</div>
+            <span class="text-[10px] text-center text-on-surface-variant font-medium leading-tight">First Check-in</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 cursor-pointer group" title="7-Day Streak">
+            <div class="w-14 h-14 rounded-2xl bg-orange-100 flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform">🔥</div>
+            <span class="text-[10px] text-center text-on-surface-variant font-medium leading-tight">7-Day Streak</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 cursor-pointer group" title="Journal Keeper">
+            <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-2xl shadow-sm group-hover:scale-110 transition-transform">📓</div>
+            <span class="text-[10px] text-center text-on-surface-variant font-medium leading-tight">Journal Keeper</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 cursor-default opacity-40" title="Locked">
+            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-2xl">🏆</div>
+            <span class="text-[10px] text-center text-on-surface-variant font-medium leading-tight">30-Day Goal</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 cursor-default opacity-40" title="Locked">
+            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-2xl">🧘</div>
+            <span class="text-[10px] text-center text-on-surface-variant font-medium leading-tight">Zen Master</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 cursor-default opacity-40" title="Locked">
+            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-2xl">💬</div>
+            <span class="text-[10px] text-center text-on-surface-variant font-medium leading-tight">Community Pro</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 cursor-default opacity-40" title="Locked">
+            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-2xl">🌈</div>
+            <span class="text-[10px] text-center text-on-surface-variant font-medium leading-tight">Mood Expert</span>
+          </div>
+          <div class="flex flex-col items-center gap-1.5 cursor-default opacity-40" title="Locked">
+            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-2xl">🌙</div>
+            <span class="text-[10px] text-center text-on-surface-variant font-medium leading-tight">Sleep Guru</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-surface-container-lowest border-t border-outline-variant/10 py-10 px-6 mt-8">
+    <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-sm text-on-surface-variant">© 2024 TeenSync. Made with 💙 for teen wellbeing.</p>
+      <div class="flex gap-6 text-sm text-on-surface-variant">
+        <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-primary transition-colors">Safety Guide</a>
+        <a href="#" class="hover:text-primary transition-colors">Help Center</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chat widget removed from here (now embedded in grid) -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    const aiPrompts = [
+      "What's one small thing that made you smile today, even briefly?",
+      "Describe a moment this week when you felt truly at peace.",
+      "What's something you handled well recently that you're proud of?",
+      "If you could tell your past self one thing, what would it be?",
+      "What's something you're looking forward to, no matter how small?",
+      "Write about someone who made you feel safe recently.",
+      "What's one habit you want to build? Why does it matter to you?",
+    ];
+
+    function newPrompt() {
+      const promptEl = document.querySelector('.bg-gradient-to-r p.italic');
+      if (promptEl) {
+        const idx = Math.floor(Math.random() * aiPrompts.length);
+        promptEl.style.opacity = '0';
+        setTimeout(() => {
+          promptEl.textContent = aiPrompts[idx];
+          promptEl.style.opacity = '1';
+          promptEl.style.transition = 'opacity 0.3s';
+        }, 200);
+      }
+    }
+
+    function selectMood(el) {
+      document.querySelectorAll('.mood-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      const mood = el.getAttribute('data-mood');
+      showToast(`Feeling ${mood} logged! 💙`, 'favorite', '#ac3149');
+    }
+
+    function addMoodTag(btn, tag) {
+      const textarea = document.getElementById('journal-text');
+      const current = textarea.value;
+      if (!current.endsWith(tag) && !current.includes(tag)) {
+        textarea.value = current + (current ? ' ' : '') + tag;
+      }
+      btn.style.background = '#bdbeff';
+      btn.style.color = '#363970';
+    }
+
+    const journalEntries = JSON.parse(localStorage.getItem('teensynx_journal') || '[]');
+
+    function saveJournal() {
+      const text = document.getElementById('journal-text').value.trim();
+      if (!text) { showToast('Write something first!', 'edit_note', '#586066'); return; }
+      journalEntries.unshift({ text, date: new Date().toISOString() });
+      localStorage.setItem('teensynx_journal', JSON.stringify(journalEntries.slice(0, 50)));
+      showToast('Journal entry saved! 📓 Keep reflecting.', 'check_circle', '#306b3f');
+      document.getElementById('journal-text').value = '';
+    }
+
+    // Save journal on Ctrl+Enter
+    document.getElementById('journal-text').addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') saveJournal();
+    });
+  </script>
+</body>
+</html>

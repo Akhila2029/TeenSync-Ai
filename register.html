@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up - TeenSync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#575a93",
+            "primary-container": "#bdbeff",
+            "on-primary": "#fbf7ff",
+            "on-primary-container": "#363970",
+            secondary: "#31638a",
+            "secondary-container": "#cde5ff",
+            tertiary: "#306b3f",
+            "tertiary-container": "#b4f5bd",
+            surface: "#f7fafe",
+            "surface-dim": "#d2dbe3",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f0f4f9",
+            "surface-container": "#e9eef4",
+            "surface-container-high": "#e2e9ef",
+            "on-surface": "#2b3339",
+            "on-surface-variant": "#586066",
+            outline: "#737c82",
+            "outline-variant": "#abb3ba",
+            error: "#ac3149",
+          },
+          fontFamily: {
+            headline: ["Plus Jakarta Sans", "sans-serif"],
+            body: ["Manrope", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "2rem",
+            xl: "3rem",
+            full: "9999px",
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex items-center justify-center relative overflow-hidden">
+  
+  <!-- Background Elements -->
+  <div class="absolute top-[10%] right-[10%] w-[40%] h-[60%] rounded-full bg-secondary-container/30 blur-[100px] -z-10 mix-blend-multiply"></div>
+  <div class="absolute -bottom-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-tertiary-container/30 blur-[100px] -z-10 mix-blend-multiply"></div>
+  
+  <!-- Back to home -->
+  <a href="index.html" class="absolute top-6 left-6 flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-bold z-10">
+    <span class="material-symbols-outlined">arrow_back</span> Back to Home
+  </a>
+
+  <!-- Register Card -->
+  <div class="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white p-8 md:p-10 rounded-3xl shadow-xl z-10 mx-4 my-8">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-headline font-extrabold text-on-surface mb-2">Create Account</h1>
+      <p class="text-on-surface-variant">Your safe space for mental wellness</p>
+    </div>
+
+    <!-- Error Alert -->
+    <div id="register-error" class="hidden mb-6 p-4 bg-error/10 border border-error/20 text-error rounded-xl text-sm font-semibold flex items-start gap-2">
+      <span class="material-symbols-outlined text-sm mt-0.5">error</span>
+      <span id="register-error-msg">Registration failed</span>
+    </div>
+
+    <form id="register-form" class="space-y-5">
+      <div>
+        <label for="username" class="block text-sm font-bold text-on-surface mb-2">Username</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-outline-variant text-lg">person</span>
+          </div>
+          <input type="text" id="username" required pattern="^[a-zA-Z0-9_\-]+$" title="Alphanumeric with dashes/underscores" class="w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-on-surface font-semibold placeholder:font-medium placeholder:text-outline-variant/70" placeholder="creative_mind">
+        </div>
+        <p class="text-[10px] text-on-surface-variant mt-1.5 ml-1">Must be unique. Alphanumeric, -, _ only.</p>
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm font-bold text-on-surface mb-2">Email Address</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-outline-variant text-lg">mail</span>
+          </div>
+          <input type="email" id="email" required class="w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-on-surface font-semibold placeholder:font-medium placeholder:text-outline-variant/70" placeholder="you@example.com">
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-bold text-on-surface mb-2">Password</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-outline-variant text-lg">lock</span>
+          </div>
+          <input type="password" id="password" required minlength="8" class="w-full pl-11 pr-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-on-surface font-semibold placeholder:font-medium placeholder:text-outline-variant/70" placeholder="••••••••">
+        </div>
+        <p class="text-[10px] text-on-surface-variant mt-1.5 ml-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[12px]">security</span> Minimum 8 characters
+        </p>
+      </div>
+
+      <button type="submit" id="register-btn" class="w-full py-4 bg-primary text-white rounded-full font-bold shadow-md hover:bg-primary/90 hover:shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 mt-2">
+        <span>Sign Up</span>
+        <span class="material-symbols-outlined text-sm">person_add</span>
+        <span id="register-spinner" class="hidden material-symbols-outlined animate-spin text-sm">progress_activity</span>
+      </button>
+    </form>
+
+    <div class="mt-8 text-center">
+      <p class="text-sm text-on-surface-variant font-medium">Already have an account? <a href="login.html" class="text-primary font-bold hover:underline">Log In</a></p>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('register-error');
+      const errorMsg = document.getElementById('register-error-msg');
+      const btn = document.getElementById('register-btn');
+      const spinner = document.getElementById('register-spinner');
+      
+      // Reset state
+      errorDiv.classList.add('hidden');
+      spinner.classList.remove('hidden');
+      btn.classList.add('opacity-80', 'pointer-events-none');
+      
+      try {
+        const response = await fetch(`${window.TEENSYNC_CONFIG.API_BASE_URL}/api/v1/auth/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password, role: 'user' })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          // Success: Store token and redirect
+          localStorage.setItem('teensync_token', data.access_token);
+          window.location.href = 'dashboard.html';
+        } else {
+          // Error
+          errorMsg.textContent = data.detail || 'Registration failed. Try a different username/email.';
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (err) {
+        errorMsg.textContent = 'Server connection error. Is backend running?';
+        errorDiv.classList.remove('hidden');
+      } finally {
+        spinner.classList.add('hidden');
+        btn.classList.remove('opacity-80', 'pointer-events-none');
+      }
+    });
+  </script>
+</body>
+</html>

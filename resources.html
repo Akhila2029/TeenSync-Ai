@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TeenSync – Resource Library</title>
+  <meta name="description" content="Expert articles, guided meditations, sleep soundscapes, and interactive mental wellness tools for teens."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#575a93", "primary-container": "#bdbeff", "on-primary": "#fbf7ff",
+            "on-primary-container": "#363970", "primary-fixed-dim": "#afb1f1",
+            secondary: "#31638a", "secondary-container": "#cde5ff", "on-secondary-container": "#20567c",
+            "secondary-dim": "#22577e",
+            tertiary: "#306b3f", "tertiary-container": "#b4f5bd", "on-tertiary-container": "#235f35",
+            "tertiary-dim":"#235e34",
+            surface: "#f7fafe", "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f0f4f9", "surface-container": "#e9eef4",
+            "surface-container-high": "#e2e9ef",
+            "on-surface": "#2b3339", "on-surface-variant": "#586066",
+            outline: "#737c82", "outline-variant": "#abb3ba", error: "#ac3149",
+          },
+          fontFamily: { headline: ["Plus Jakarta Sans","sans-serif"], body: ["Manrope","sans-serif"] },
+          borderRadius: { DEFAULT: "1rem", lg: "2rem", xl: "3rem", full: "9999px" },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-x-hidden">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-500">
+    <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-110 transition-transform duration-300">
+          <span class="material-symbols-outlined text-white text-lg" style="font-variation-settings:'FILL' 1">sync</span>
+        </div>
+        <span class="text-xl font-headline font-bold text-on-surface tracking-tight">TeenSync</span>
+      </a>
+      <div class="hidden md:flex items-center gap-1">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="resources.html" class="nav-link active">Resources</a>
+        <a href="dashboard.html" class="nav-link">My Space</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="toggleSearch()" class="p-2.5 rounded-full hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-on-surface-variant">search</span>
+        </button>
+        <div class="w-9 h-9 rounded-full bg-primary-container border-2 border-primary/20 flex items-center justify-center font-bold text-primary text-sm cursor-pointer hover:scale-105 transition-transform">A</div>
+        <button id="menu-btn" class="md:hidden p-2 rounded-xl hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-outline-variant/20 px-6 py-4">
+      <div class="flex flex-col gap-2">
+        <a href="index.html" class="mobile-nav-link">Home</a>
+        <a href="community.html" class="mobile-nav-link">Community</a>
+        <a href="resources.html" class="mobile-nav-link">Resources</a>
+        <a href="dashboard.html" class="mobile-nav-link">My Space</a>
+      </div>
+    </div>
+    <!-- Search bar -->
+    <div id="search-bar" class="hidden bg-white/95 backdrop-blur-xl border-t border-outline-variant/20 px-6 py-4">
+      <div class="max-w-screen-xl mx-auto">
+        <div class="flex items-center gap-3 bg-surface-container-low rounded-full px-5 py-3">
+          <span class="material-symbols-outlined text-on-surface-variant">search</span>
+          <input id="search-input" type="text" placeholder="Search resources, meditations, articles..." class="flex-1 bg-transparent outline-none text-on-surface placeholder:text-on-surface-variant font-body"/>
+          <button onclick="toggleSearch()" class="text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-lg">close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Background blobs -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-20 -right-20 w-96 h-96 bg-tertiary-container rounded-full" style="filter:blur(80px);opacity:0.3;"></div>
+    <div class="absolute bottom-20 -left-20 w-96 h-96 bg-secondary-container rounded-full" style="filter:blur:100px;opacity:0.25;filter:blur(100px);"></div>
+  </div>
+
+  <main class="relative z-10 pt-28 pb-20 px-6 max-w-screen-xl mx-auto">
+    <!-- Hero -->
+    <section class="mb-14 reveal">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <div class="max-w-2xl">
+          <span class="text-xs font-bold tracking-widest uppercase text-tertiary block mb-4">Curated for You</span>
+          <h1 class="text-4xl md:text-5xl font-headline font-extrabold tracking-tight text-on-surface leading-tight">
+            Explore Your<br/><span class="gradient-text">Mental Oasis 🌿</span>
+          </h1>
+          <p class="mt-4 text-lg text-on-surface-variant max-w-xl leading-relaxed">
+            A sanctuary of articles, meditations, and tools to help you navigate teen life with clarity and ease.
+          </p>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="toggleSearch()" class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/10 text-primary hover:bg-surface-container-low shadow-sm transition-all hover:scale-105">
+            <span class="material-symbols-outlined">search</span>
+          </button>
+          <button class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/10 text-primary hover:bg-surface-container-low shadow-sm transition-all hover:scale-105">
+            <span class="material-symbols-outlined">filter_list</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Bento -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 reveal">
+      <!-- Large featured card -->
+      <div class="md:col-span-2 bg-surface-container-lowest rounded-2xl border border-outline-variant/10 shadow-sm flex flex-col md:flex-row overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group">
+        <div class="w-full md:w-1/2 aspect-video bg-gradient-to-br from-green-100 to-teal-100 flex items-center justify-center">
+          <div class="text-center p-8">
+            <div class="text-7xl mb-3">🧘</div>
+            <p class="text-sm font-medium text-tertiary">Guided Meditation</p>
+          </div>
+        </div>
+        <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
+          <span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-4 w-fit">Featured</span>
+          <h3 class="text-2xl font-headline font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Finding Calm in the Chaos</h3>
+          <p class="text-on-surface-variant text-sm leading-relaxed mb-5">A 10-minute grounding session designed specifically for high-stress school weeks.</p>
+          <button onclick="showToast('Opening audio player...','headphones','#306b3f')" class="inline-flex items-center gap-2 text-tertiary font-bold text-sm group-hover:gap-3 transition-all">
+            Listen Now <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Mood Check-in card -->
+      <div class="soul-gradient rounded-2xl p-8 text-on-primary flex flex-col justify-between relative overflow-hidden cursor-pointer group hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20">
+        <div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full"></div>
+        <div class="absolute -left-4 -bottom-4 w-20 h-20 bg-white/10 rounded-full"></div>
+        <div class="relative z-10">
+          <span class="material-symbols-outlined text-5xl mb-5 block" style="font-variation-settings:'FILL' 1">psychology</span>
+          <h3 class="text-2xl font-headline font-bold mb-2">Mood Check-in</h3>
+          <p class="text-white/75 text-sm leading-relaxed">Identify your emotions in under 60 seconds with our interactive wheel.</p>
+        </div>
+        <button onclick="showToast('Starting mood check-in...','favorite','#ac3149')" class="relative z-10 mt-6 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-6 py-3 rounded-full font-bold text-sm text-center border border-white/20 transition-all">
+          Start Exercise
+        </button>
+      </div>
+    </section>
+
+    <!-- Filter Pills -->
+    <div class="flex gap-3 overflow-x-auto pb-3 mb-8 no-scrollbar reveal">
+      <button class="filter-btn active" data-filter="all">✦ All Resources</button>
+      <button class="filter-btn" data-filter="article">📖 Articles</button>
+      <button class="filter-btn" data-filter="audio">🎧 Audio & Meditation</button>
+      <button class="filter-btn" data-filter="tool">🛠 Interactive Tools</button>
+      <button class="filter-btn" data-filter="video">🎬 Videos</button>
+      <button class="filter-btn" data-filter="guide">📋 Guides</button>
+    </div>
+
+    <!-- Resource Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+
+      <!-- Card 1 -->
+      <div class="resource-card reveal" data-category="article">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-6xl mb-2">📓</div>
+          </div>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-secondary-dim uppercase tracking-wider">Article</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2 group-hover:text-primary">Mastering the Art of Journaling</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">How putting pen to paper can significantly reduce anxiety and improve your sleep quality.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">8 min read</span>
+            <button onclick="showToast('Opening article...','description','#31638a')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              Read <span class="material-symbols-outlined text-sm">east</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="resource-card reveal reveal-delay-1" data-category="audio">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-purple-50 to-pink-100 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-6xl mb-2">🌅</div>
+          </div>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-tertiary-dim uppercase tracking-wider">Audio</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2">Evening Wind-Down Soundscape</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">Immersive nature sounds to help you drift into a deep, restful sleep.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">15 min</span>
+            <button onclick="showToast('Starting audio player...','headphones','#306b3f')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              Play <span class="material-symbols-outlined text-sm">play_circle</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="resource-card reveal reveal-delay-2" data-category="tool">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-6xl mb-2">📱</div>
+          </div>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-primary-dim uppercase tracking-wider">Tool</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2">Setting Digital Boundaries</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">An interactive planner to help you balance social media and real life.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">Interactive</span>
+            <button onclick="showToast('Loading interactive tool...','open_in_new','#575a93')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              Open <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="resource-card reveal" data-category="article">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-amber-50 to-orange-100 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-6xl mb-2">🪨</div>
+          </div>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-secondary-dim uppercase tracking-wider">Article</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2">Understanding Peer Pressure</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">Psychological insights on why we feel the need to fit in and how to stay true to yourself.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">12 min read</span>
+            <button onclick="showToast('Opening article...','description','#31638a')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              Read <span class="material-symbols-outlined text-sm">east</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="resource-card reveal reveal-delay-1" data-category="guide">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-secondary-container/40 to-primary-container/20 flex items-center justify-center">
+          <span class="material-symbols-outlined text-8xl text-secondary/30" style="font-variation-settings:'FILL' 1">self_improvement</span>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-tertiary-dim uppercase tracking-wider">Guide</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2">Yoga for Focus &amp; Energy</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">Simple stretches you can do at your desk to boost concentration during study sessions.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">Step-by-step</span>
+            <button onclick="showToast('Loading guide...','visibility','#306b3f')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              View <span class="material-symbols-outlined text-sm">visibility</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="resource-card reveal reveal-delay-2" data-category="video">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-rose-50 to-pink-100 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-6xl mb-2">🎤</div>
+          </div>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-primary-dim uppercase tracking-wider">Video</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2">Public Speaking with Confidence</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">Recorded workshop with techniques to manage nerves and deliver great presentations.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">45 min video</span>
+            <button onclick="showToast('Loading video player...','play_circle','#575a93')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              Watch <span class="material-symbols-outlined text-sm">play_circle</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="resource-card reveal" data-category="audio">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-violet-100 to-purple-100 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-6xl mb-2">🌙</div>
+          </div>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-tertiary-dim uppercase tracking-wider">Audio</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2">5-Minute Body Scan Meditation</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">A quick full-body relaxation technique perfect for before bed or a stressful moment.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">5 min</span>
+            <button onclick="showToast('Starting meditation...','headphones','#306b3f')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              Play <span class="material-symbols-outlined text-sm">play_circle</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="resource-card reveal reveal-delay-1" data-category="tool">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-teal-50 to-cyan-100 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-6xl mb-2">🫧</div>
+          </div>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-primary-dim uppercase tracking-wider">Tool</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2">Breathing Exercise Timer</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">Animated 4-7-8 breathing guide to quickly calm anxiety in stressful situations.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">Interactive</span>
+            <button onclick="showToast('Opening breathing tool...','air','#575a93')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              Try <span class="material-symbols-outlined text-sm">east</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 9 -->
+      <div class="resource-card reveal reveal-delay-2" data-category="guide">
+        <div class="relative h-52 overflow-hidden bg-gradient-to-br from-yellow-50 to-amber-100 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-6xl mb-2">⭐</div>
+          </div>
+          <button class="bookmark-btn absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-md rounded-full text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-sm">bookmark</span>
+          </button>
+          <span class="absolute top-3 left-3 bg-white/90 px-2.5 py-1 rounded-full text-xs font-bold text-tertiary-dim uppercase tracking-wider">Guide</span>
+        </div>
+        <div class="p-5">
+          <h4 class="text-lg font-headline font-bold text-on-surface mb-2">Building Healthy Routines</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed line-clamp-2 mb-4">A science-backed guide to forming habits that stick, designed for teen brains.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-outline font-semibold">10 min read</span>
+            <button onclick="showToast('Opening guide...','auto_stories','#306b3f')" class="flex items-center gap-1 text-primary font-bold text-sm hover:gap-2.5 transition-all">
+              Read <span class="material-symbols-outlined text-sm">east</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="bg-surface-container rounded-2xl p-10 md:p-14 text-center relative overflow-hidden reveal">
+      <div class="absolute top-0 right-0 w-48 h-48 bg-primary rounded-full" style="filter:blur(64px);opacity:0.08;"></div>
+      <div class="absolute bottom-0 left-0 w-64 h-64 bg-tertiary rounded-full" style="filter:blur(80px);opacity:0.06;"></div>
+      <div class="relative z-10">
+        <span class="text-2xl mb-3 block">🌱</span>
+        <h2 class="text-3xl font-headline font-extrabold text-on-surface mb-3">Stay Mindful</h2>
+        <p class="text-on-surface-variant max-w-lg mx-auto mb-8 leading-relaxed">New resources, expert tips, and community stories delivered to your inbox every week.</p>
+        <div class="max-w-md mx-auto flex gap-3">
+          <input type="email" placeholder="Enter your email" class="flex-1 bg-white border-none rounded-full px-5 py-3 focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline text-sm shadow-sm outline-none"/>
+          <button onclick="handleSubscribe()" class="btn-primary text-sm px-7 py-3 shrink-0">Join Us</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-surface-container-lowest border-t border-outline-variant/10 py-10 px-6 mt-8">
+    <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-sm text-on-surface-variant">© 2024 TeenSync. Made with 💙 for teen wellbeing.</p>
+      <div class="flex gap-6 text-sm text-on-surface-variant">
+        <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-primary transition-colors">Terms of Use</a>
+        <a href="#" class="hover:text-primary transition-colors">Help Center</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== LUNA CHAT WIDGET ===== -->
+  <!-- Chat Button -->
+  <button id="luna-chat-toggle" class="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-xl hover:scale-110 transition-transform flex items-center justify-center z-50">
+    <span class="material-symbols-outlined text-2xl" id="luna-toggle-icon">chat</span>
+  </button>
+
+  <!-- Chat Window -->
+  <div id="luna-chat-window" class="fixed bottom-24 right-6 w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-outline-variant/20 z-50 flex flex-col hidden overflow-hidden scale-95 opacity-0 transition-all duration-300 transform origin-bottom-right" style="height: 500px; max-height: calc(100vh - 120px);">
+    <!-- Chat Header -->
+    <div class="bg-primary px-4 py-3 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+        <span class="text-xl">🌙</span>
+      </div>
+      <div>
+        <h3 class="text-white font-headline font-bold leading-tight">Luna</h3>
+        <p class="text-white/80 text-xs">AI wellness assistant</p>
+      </div>
+      <button id="luna-chat-close" class="ml-auto text-white/80 hover:text-white transition-colors">
+        <span class="material-symbols-outlined text-sm">close</span>
+      </button>
+    </div>
+    
+    <!-- Chat Messages -->
+    <div id="luna-chat-messages" class="flex-1 p-4 overflow-y-auto bg-surface-container-lowest flex flex-col gap-3">
+      <!-- Welcome message -->
+      <div class="self-start bg-surface-container px-4 py-2.5 rounded-2xl rounded-tl-sm max-w-[85%] text-sm text-on-surface">
+        Hi there! I'm Luna. I'm here to listen, support, and help you find the right resources. How are you feeling today?
+      </div>
+    </div>
+    
+    <!-- Typing indicator (hidden by default) -->
+    <div id="luna-typing-indicator" class="hidden px-4 pb-2 bg-surface-container-lowest">
+      <div class="flex items-center gap-1 my-1">
+        <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+        <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+        <div class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+        <span class="text-xs text-on-surface-variant ml-2 italic">Luna is typing...</span>
+      </div>
+    </div>
+    
+    <!-- Chat Input -->
+    <div class="p-3 bg-white border-t border-outline-variant/10">
+      <div class="relative flex items-center">
+        <input type="text" id="luna-chat-input" class="w-full bg-surface-container-low border-none rounded-full pl-4 pr-12 py-2.5 text-sm focus:ring-1 focus:ring-primary outline-none" placeholder="Type a message..." autocomplete="off">
+        <button id="luna-chat-send" class="absolute right-1 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors">
+          <span class="material-symbols-outlined text-sm">send</span>
+        </button>
+      </div>
+      <div class="text-[10px] text-center text-on-surface-variant mt-2">
+        Luna is an AI, not a human crisis counselor.
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    function toggleSearch() {
+      const bar = document.getElementById('search-bar');
+      bar.classList.toggle('hidden');
+      if (!bar.classList.contains('hidden')) {
+        document.getElementById('search-input').focus();
+      }
+    }
+
+    document.getElementById('search-input')?.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('.resource-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(q) || !q ? '' : 'none';
+      });
+    });
+
+    function handleSubscribe() {
+      const email = document.querySelector('input[type="email"]').value;
+      if (!email || !email.includes('@')) {
+        showToast('Please enter a valid email', 'error', '#ac3149');
+        return;
+      }
+      document.querySelector('input[type="email"]').value = '';
+      showToast('You\'re subscribed! 🌱 Check your inbox', 'email', '#306b3f');
+    }
+  </script>
+</body>
+</html>

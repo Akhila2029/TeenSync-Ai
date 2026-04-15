@@ -1,0 +1,29 @@
+# Render Blueprint for TeenSync
+services:
+  # ── Backend Web Service ──────────────────────────────────────────────────
+  - type: web
+    name: teensync-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    region: ohio # Change to your preferred region
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: teensync-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false # Set this in the Render Dashboard
+      - key: ALLOWED_ORIGINS
+        value: "https://teensync-app.vercel.app,http://localhost:3456" # Update with your Vercel URL
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+# ── PostgreSQL Database ────────────────────────────────────────────────────
+databases:
+  - name: teensync-db
+    plan: free
+    region: ohio
